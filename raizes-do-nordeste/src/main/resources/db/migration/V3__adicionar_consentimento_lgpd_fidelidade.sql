@@ -1,0 +1,2 @@
+ALTER TABLE fidelidades
+ADD COLUMN consentimento_lgpd BOOLEAN NOT NULL DEFAULT FALSE;

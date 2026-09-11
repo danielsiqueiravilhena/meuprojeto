@@ -1,0 +1,614 @@
+{
+  "info": {
+    "_postman_id": "d58e2b10-fc0b-44bc-82fd-86035ac85aa2",
+    "name": "Raízes do Nordeste - Projeto Multidisciplinar",
+    "description": "Coleção de testes do backend da Rede Raízes do Nordeste, cobrindo autenticação, autorização, pedidos, estoque, pagamento mock, fidelidade/LGPD, multicanal e auditoria.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57662475",
+    "_collection_link": "https://go.postman.co/collection/57662475-d58e2b10-fc0b-44bc-82fd-86035ac85aa2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01 - Autenticação",
+      "item": [
+        {
+          "name": "Login admin válido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"admin@raizes.com\",\"senha\":\"123456\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Acesso sem token - 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Produtos e autorização",
+      "item": [
+        {
+          "name": "Listar produtos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Acesso com papel incorreto - 403",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/estoque",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Pedidos",
+      "item": [
+        {
+          "name": "Criar pedido válido - TOTEM",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"canalPedido\":\"TOTEM\",\"clienteId\":123,\"unidadeId\":1,\"formaPagamento\":\"MOCK\",\"itens\":[{\"produtoId\":2,\"quantidade\":1},{\"produtoId\":3,\"quantidade\":1}]}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar pedido sem canal - erro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"clienteId\":123,\"unidadeId\":1,\"formaPagamento\":\"MOCK\",\"itens\":[{\"produtoId\":2,\"quantidade\":1}]}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Produto inexistente - 404",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"canalPedido\":\"WEB\",\"clienteId\":123,\"unidadeId\":1,\"formaPagamento\":\"MOCK\",\"itens\":[{\"produtoId\":9999,\"quantidade\":1}]}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unidade inexistente - 404",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"canalPedido\":\"WEB\",\"clienteId\":123,\"unidadeId\":9999,\"formaPagamento\":\"MOCK\",\"itens\":[{\"produtoId\":4,\"quantidade\":1}]}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Estoque insuficiente - 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"canalPedido\":\"WEB\",\"clienteId\":123,\"unidadeId\":1,\"formaPagamento\":\"MOCK\",\"itens\":[{\"produtoId\":4,\"quantidade\":20}]}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar pedidos por canal TOTEM",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos?canalPedido=TOTEM",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ],
+              "query": [
+                {
+                  "key": "canalPedido",
+                  "value": "TOTEM"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Quantidade inválida - erro 400",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar status - EM_PREPARACAO",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "EM_PREPARACAO → PRONTO",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PRONTO → ENTREGUE",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "testar transição inválida 409",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Pagamento mock",
+      "item": [
+        {
+          "name": "Pagamento aprovado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos/{{pedidoId}}?resultado=APROVADO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos",
+                "{{pedidoId}}"
+              ],
+              "query": [
+                {
+                  "key": "resultado",
+                  "value": "APROVADO"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pagamento recusado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos/{{pedidoId}}?resultado=RECUSADO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos",
+                "{{pedidoId}}"
+              ],
+              "query": [
+                {
+                  "key": "resultado",
+                  "value": "RECUSADO"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 - Fidelidade e LGPD",
+      "item": [
+        {
+          "name": "Consultar fidelidade",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/cliente/{{clienteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "cliente",
+                "{{clienteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar consentimento LGPD",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/cliente/{{clienteId}}/consentimento?consentimento=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "cliente",
+                "{{clienteId}}",
+                "consentimento"
+              ],
+              "query": [
+                {
+                  "key": "consentimento",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resgatar pontos",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/cliente/{{clienteId}}/resgate?pontos=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "cliente",
+                "{{clienteId}}",
+                "resgate"
+              ],
+              "query": [
+                {
+                  "key": "pontos",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Adicionar zero pontos - erro 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/fidelidade/cliente/{{clienteId}}/pontos?pontos=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fidelidade",
+                "cliente",
+                "{{clienteId}}",
+                "pontos"
+              ],
+              "query": [
+                {
+                  "key": "pontos",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "06 - Estoque e auditoria",
+      "item": [
+        {
+          "name": "Consultar estoque",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/estoque",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Consultar auditoria",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auditoria",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auditoria"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJvcGVyYWRvckByYWl6ZXMuY29tIiwicm9sZSI6Ik9QRVJBRE9SIiwiaWF0IjoxNzg5MTM3NzY5LCJleHAiOjE3ODkxNDEzNjl9.boWv_sIgphYy_5h-JlKKDv290DhclKS_lyFDlH7WFO7iwDy430Bo9zc5b8nXApF_",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "pedidoId",
+      "value": "22"
+    },
+    {
+      "key": "clienteId",
+      "value": "123"
+    },
+    {
+      "key": "json_web_token_0fcz",
+      "secret": true
+    }
+  ]
+}
