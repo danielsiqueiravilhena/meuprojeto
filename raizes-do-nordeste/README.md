@@ -696,8 +696,9 @@ somente para produtos participantes;
 
 sem cumulatividade com outras promoções.
 Essa regra é uma proposta de evolução e não representa uma funcionalidade automatizada do MVP atual.
-<br>
-<br>
+
+
+
 Observação
 
 Este projeto possui finalidade acadêmica.
