@@ -69,15 +69,25 @@ A aplicação contempla autenticação por JWT, controle de acesso por perfil, v
 As Tecnologias
 
 Java 21;
+
 Spring Boot 4.1.1;
+
 Hibernate;
+
 JWT (JSON Web Token);
+
 BCrypt;
+
 PostgreSQL;
+
 Flyway;
+
 Bean Validation;
+
 Swagger / OpenAPI;
+
 Maven;
+
 Postman para testes da API.
 
 
