@@ -107,29 +107,43 @@ Dessa forma, o Hibernate apenas valida a estrutura das entidades em relação ao
 A Configuração
 
 A configuração principal está localizada em:
-src/main/resources/application.properties
+src/main/resources/application.properties.
 A aplicação utiliza variáveis de ambiente para informações sensíveis.
 Exemplo:
+
 spring.application.name=raizes-do-nordeste
+
 spring.datasource.url=jdbc:postgresql://localhost:5432/raizes\_nordeste
+
 spring.datasource.username=postgres
+
 spring.datasource.password=${DB\_PASSWORD}
+
 server.port=8081
+
 spring.jpa.hibernate.ddl-auto=validate
+
 spring.jpa.show-sql=true
+
 spring.jpa.properties.hibernate.format\_sql=true
+
 spring.flyway.enabled=true
+
 spring.flyway.url=jdbc:postgresql://localhost:5432/raizes\_nordeste
+
 spring.flyway.user=postgres
+
 spring.flyway.password=${DB\_PASSWORD}
+
 spring.flyway.locations=classpath:db/migration
+
 As variáveis DB\_PASSWORD e JWT\_SECRET devem ser configuradas no ambiente de execução como citado no começo do readme.
 
 
 As Migrações do banco
 
 As migrações do banco como citadas acima ficam em:
-src/main/resources/db/migration
+src/main/resources/db/migration.
 Entre as alterações versionadas estão:
 criação/estrutura inicial utilizada pelo projeto;
 associação do estoque às unidades;
@@ -159,6 +173,7 @@ Swagger / OpenAPI
 
 Após iniciar a aplicação, acesse:
 http://localhost:8081/swagger-ui/index.html
+
 A documentação permite visualizar os endpoints disponíveis e realizar testes diretamente pela interface do Swagger.
 A API utiliza autenticação Bearer Token para as rotas protegidas.
 
@@ -167,11 +182,16 @@ A Autenticação
 
 Para acessar endpoints protegidos:
 Faça login usando um dos usuários acima.
+
 POST /auth/login
+
 Copie o token JWT retornado.
 No Postman utilize:
+
 Authorization
+
 Bearer Token
+
 Cole o token recebido nas rotas protegidas.
 Exemplo:
 {
@@ -190,32 +210,50 @@ OPERADOR: tem acesso aos recursos operacionais permitidos pela configuração de
 Os Principais endpoints:
 
 POST /auth/login - autenticação. 
+
 GET /produtos - produtos. 
+
 GET /unidades - unidades. 
 GET /estoque - estoque. 
+
 POST /pedidos - criação de pedido. 
+
 GET /pedidos - consulta, com filtro canalPedido. 
+
 PUT /pedidos/{id}/status - atualização de status. 
+
 POST /pagamentos/{pedidoId}?resultado=APROVADO|RECUSADO - pagamento mock. 
+
 GET /fidelidade/cliente/{clienteId} - saldo. 
-PUT /fidelidade/cliente/{clienteId}/consentimento - consentimento LGPD. 
+
+PUT /fidelidade/cliente/{clienteId}/consentimento - consentimento LGPD.
+
 POST /fidelidade/cliente/{clienteId}/pontos - pontos. 
+
 POST /fidelidade/cliente/{clienteId}/resgate - resgate. 
+
 GET /fidelidade/cliente/{clienteId}/historico - histórico. 
 
 
 O campo canalPedido utiliza os seguintes valores:
 
 APP
+
 TOTEM
+
 BALCAO
+
 PICKUP
+
 WEB
 
 Também é possível filtrar pedidos por canal:
 GET /pedidos?canalPedido=TOTEM
+
 O pedido possui status controlado por regras de transição.
+
 Foi implementado um mecanismo de pagamento mock para representar a integração do sistema com um gateway de pagamento externo. O resultado do processamento pode ser informado como APROVADO ou RECUSADO, permitindo simular diferentes respostas.  O endpoint utilizado para o processamento é: POST /pagamentos/{pedidoId}?resultado=APROVADO ou: POST /pagamentos/{pedidoId}?resultado=RECUSADO.
+
 Quando o pagamento é aprovado, o registro do pagamento é persistido no banco de dados, o pedido recebe o status PAGAMENTO\_APROVADO e são gerados pontos de fidelidade com base no valor do pedido. 
 Quando o pagamento é recusado, o registro da tentativa de pagamento é persistido e o pedido recebe o status CANCELADO. Nesse cenário, não são concedidos pontos de fidelidade. O pagamento é um mock acadêmico, utilizado para representar a integração com um gateway externo.
 Nenhuma transação financeira real é realizada pela aplicação.
