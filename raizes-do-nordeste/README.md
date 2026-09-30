@@ -40,6 +40,7 @@ Substitua pelo valor da senha configurada no PostgreSQL/pgAdmin.
 
 
 Usuários para teste
+
 Após iniciar a aplicação, utilize os usuários abaixo para autenticação:
 Administrador
 Email:
@@ -60,11 +61,13 @@ Ele integra pedidos, produtos, estoque por unidade, pagamento simulado, fideliza
 
 
 O Objetivo
+
 Disponibilizar uma API REST para apoiar a operação da Rede Raízes do Nordeste, permitindo o gerenciamento de produtos, unidades, estoque, pedidos, pagamentos simulados e programa de fidelidade.
 A aplicação contempla autenticação por JWT, controle de acesso por perfil, validação de dados, controle de estoque por unidade, múltiplos canais de pedido, registro de auditoria e consentimento para utilização do programa de fidelidade.
 
 
 As Tecnologias
+
 Java 21
 Spring Boot 4.1.1
 Hibernate
@@ -79,6 +82,7 @@ Postman para testes da API
 
 
 Os Pré-requisitos
+
 Antes de executar o projeto, instale:
 JDK 21
 PostgreSQL
@@ -87,6 +91,7 @@ Postman ou Insomnia para execução dos testes manuais da API
 
 
 O Banco de dados
+
 Crie um banco PostgreSQL chamado:
 raizes\_nordeste
 
@@ -100,6 +105,7 @@ Dessa forma, o Hibernate apenas valida a estrutura das entidades em relação ao
 
 
 A Configuração
+
 A configuração principal está localizada em:
 src/main/resources/application.properties
 A aplicação utiliza variáveis de ambiente para informações sensíveis.
@@ -121,6 +127,7 @@ As variáveis DB\_PASSWORD e JWT\_SECRET devem ser configuradas no ambiente de e
 
 
 As Migrações do banco
+
 As migrações do banco como citadas acima ficam em:
 src/main/resources/db/migration
 Entre as alterações versionadas estão:
@@ -132,6 +139,7 @@ O Flyway mantém o controle da versão do esquema do banco de dados.
 
 
 Executando no Eclipse
+
 Importe o projeto como projeto Maven.
 Aguarde o download das dependências.
 Confirme que o PostgreSQL está em execução.
@@ -141,12 +149,14 @@ Configure a variável JWT\_SECRET.
 
 
 Execute a classe:
+
 RaizesDoNordesteApplication.java
 A aplicação será disponibilizada em:
 http://localhost:8081
 
 
 Swagger / OpenAPI
+
 Após iniciar a aplicação, acesse:
 http://localhost:8081/swagger-ui/index.html
 A documentação permite visualizar os endpoints disponíveis e realizar testes diretamente pela interface do Swagger.
@@ -154,6 +164,7 @@ A API utiliza autenticação Bearer Token para as rotas protegidas.
 
 
 A Autenticação
+
 Para acessar endpoints protegidos:
 Faça login usando um dos usuários acima.
 POST /auth/login
@@ -170,12 +181,14 @@ Exemplo:
 
 
 Perfis
+
 O projeto possui controle de acesso por perfil.
 ADMIN: tem acesso administrativo, incluindo recursos de usuários, estoque e auditoria conforme as permissões configuradas.
 OPERADOR: tem acesso aos recursos operacionais permitidos pela configuração de segurança.
 
 
 Os Principais endpoints:
+
 POST /auth/login - autenticação. 
 GET /produtos - produtos. 
 GET /unidades - unidades. 
@@ -192,6 +205,7 @@ GET /fidelidade/cliente/{clienteId}/historico - histórico.
 
 
 O campo canalPedido utiliza os seguintes valores:
+
 APP
 TOTEM
 BALCAO
@@ -208,6 +222,7 @@ Nenhuma transação financeira real é realizada pela aplicação.
 
 
 Fidelidade
+
 GET    /fidelidade/cliente/{clienteId}
 PUT    /fidelidade/cliente/{clienteId}/consentimento
 POST   /fidelidade/cliente/{clienteId}/pontos
@@ -227,6 +242,7 @@ O resgate de pontos exige consentimento LGPD e saldo suficiente.
 
 
 A Auditoria
+
 O acesso à auditoria é restrito ao perfil administrativo.
 A aplicação possui mecanismo de auditoria para registrar operações realizadas na API.
 Entre as informações registradas estão:
@@ -242,6 +258,7 @@ Esses registros auxiliam na rastreabilidade das operações realizadas pelo sist
 
 
 A Estrutura de dados principal
+
 As principais entidades implementadas são:
 Usuario
 Unidade
@@ -257,6 +274,7 @@ As entidades representam as principais necessidades do domínio da Rede Raízes 
 
 
 O Fluxo crítico
+
 O principal fluxo implementado é:
 Pedido
 Validação dos dados
@@ -282,6 +300,7 @@ ENTREGUE
 
 
 O Status de pedido
+
 Os principais status utilizados são:
 AGUARDANDO\_PAGAMENTO
 PAGAMENTO\_APROVADO
@@ -297,6 +316,7 @@ Pedidos cancelados não podem voltar para o fluxo normal de preparação.
 
 
 As Regras de estoque
+
 O estoque é controlado por combinação de:
 Unidade + Produto
 
@@ -311,6 +331,7 @@ Essa regra evita a criação de pedidos com quantidade superior ao estoque dispo
 
 
 A Fidelização e LGPD
+
 O programa de fidelidade mantém o saldo de pontos por cliente e registra as movimentações realizadas.
 Os pontos são gerados após um pagamento MOCK aprovado, conforme a regra implementada no serviço de pagamento.
 O sistema mantém histórico das movimentações de pontos.
@@ -321,6 +342,7 @@ A solução busca aplicar o princípio de minimização de dados e evitar exposi
 
 
 O Pagamento MOCK
+
 O pagamento simulado representa uma integração com um serviço externo de pagamentos.
 O endpoint permite informar dois resultados:
 APROVADO
@@ -343,6 +365,7 @@ O pagamento é somente uma simulação acadêmica e não processa valores financ
 
 
 A Segurança
+
 Foram implementadas medidas de segurança para proteção da API, incluindo:
 autenticação com JWT;
 autorização por perfil;
@@ -362,6 +385,7 @@ quando o usuário está autenticado, mas não possui permissão para acessar det
 
 
 O Tratamento de erros
+
 A API utiliza códigos HTTP coerentes com os problemas encontrados.
 Principais exemplos:
 200 OK
@@ -388,6 +412,7 @@ Exemplo:
 
 
 Os Testes realizados
+
 Foram considerados cenários positivos e negativos para validar os principais requisitos da aplicação.
 
 Cenário	                  Resultado esperado
@@ -411,6 +436,7 @@ Consulta de auditoria	    Registro persistido
 
 
 O Postman
+
 A coleção de testes da API está disponibilizada no projeto em formato JSON, no diretório:
 postman/Raízes do Nordeste - Projeto Multidisciplinar.postman\_collection.json
 
@@ -436,6 +462,7 @@ Consultar histórico
 
 
 As Promoções e campanhas
+
 Como evolução do sistema, está prevista a possibilidade de implementação da campanha:
 Raízes da Semana
 Regra proposta:
@@ -448,4 +475,5 @@ Essa regra é uma proposta de evolução e não representa uma funcionalidade au
 
 
 Observação
+
 Este projeto possui finalidade acadêmica.
