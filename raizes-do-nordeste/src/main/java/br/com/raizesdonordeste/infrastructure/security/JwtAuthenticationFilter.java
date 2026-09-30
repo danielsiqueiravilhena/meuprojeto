@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authorizationHeader =
                 request.getHeader("Authorization");
 
-        // Se não houver token, continua a requisição normalmente
+        // SE NÃO HOUVER TOKEN CONTINUA COM A REQUISIÇÃO NORMALMENTE
         if (authorizationHeader == null ||
                 !authorizationHeader.startsWith("Bearer ")) {
 
@@ -47,11 +47,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Remove "Bearer " e pega somente o token
+        // REMOVE BEARER E PEGA SOMENTE O TOKEN
         String token =
                 authorizationHeader.substring(7);
 
-        // Verifica se o token é válido
+        // VERIFICA SE O TOKEN É VALIDO
         if (!jwtService.tokenValido(token)) {
 
             filterChain.doFilter(request, response);
@@ -70,13 +70,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Procura o usuário no banco pelo e-mail
+        // PROCURA O USUÁRIO NO BANCO PELO EMAIL
         Usuario usuario =
                 usuarioRepository
                         .findByEmail(email)
                         .orElse(null);
 
-        // Usuário inexistente ou inativo
+        // USUÁRIO INEXISTENTE OU INATIVO
         if (usuario == null ||
                 !usuario.getAtivo()) {
 
@@ -96,7 +96,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Token sem role
+        // TOKEN SEM ROLE
         if (role == null ||
                 role.isBlank()) {
 
@@ -104,7 +104,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Cria a autoridade do usuário
+        // CRIA A AUTORIDADE DO USUÁRIO
         var authorities = List.of(
                 new SimpleGrantedAuthority(
                         "ROLE_" + role
@@ -114,16 +114,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         /*
          * IMPORTANTE:
          *
-         * Usamos o e-mail como principal,
-         * e não o objeto Usuario.
-         *
-         * Isso permite que a auditoria registre:
+         * USAMOS O EMAIL COMO PRINCIPAL
+         * ISSO PERMITE QUE AUDITORIA REGISTRE:
          *
          * admin@raizes.com
          *
-         * em vez de:
+         * EM VEZ DE:
          *
-         * Usuario@540866ea
+         * Usuario@algumacoisa
          */
         var authentication =
                 new UsernamePasswordAuthenticationToken(
@@ -132,12 +130,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         authorities
                 );
 
-        // Coloca a autenticação no contexto do Spring Security
+        // COLOCA A AUTENTICAÇÃO NO CONTEXTO SPRING SECURITY
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(authentication);
 
-        // Continua a requisição
+        // CONTINUA A REQUISIÇÃO
         filterChain.doFilter(
                 request,
                 response

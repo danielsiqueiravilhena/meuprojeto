@@ -17,7 +17,7 @@ public class OpenAPIConfig {
 
         return new OpenAPI()
 
-                // Informações da API
+                // INFORMAÇÕES DA API
                 .info(
                         new Info()
                                 .title(
@@ -30,7 +30,7 @@ public class OpenAPIConfig {
                                 )
                 )
 
-                // Configuração do JWT
+                // CONFIGURAÇÃO DO JWT
                 .components(
                         new Components()
                                 .addSecuritySchemes(
@@ -44,7 +44,7 @@ public class OpenAPIConfig {
                                 )
                 )
 
-                // Indica que as operações da API utilizam JWT
+                // INDICA QUE AS OPERAÇÕES DA API UTILIZAM JWT
                 .addSecurityItem(
                         new SecurityRequirement()
                                 .addList("bearerAuth")

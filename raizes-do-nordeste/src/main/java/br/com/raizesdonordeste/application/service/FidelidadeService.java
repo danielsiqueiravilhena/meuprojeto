@@ -23,9 +23,7 @@ public class FidelidadeService {
         this.historicoFidelidadeRepository = historicoFidelidadeRepository;
     }
 
-    // =====================================================
     // CONSULTAR FIDELIDADE
-    // =====================================================
 
     public Fidelidade consultar(Long clienteId) {
 
@@ -41,9 +39,7 @@ public class FidelidadeService {
                 );
     }
 
-    // =====================================================
     // REGISTRAR CONSENTIMENTO LGPD
-    // =====================================================
 
     public Fidelidade registrarConsentimento(
             Long clienteId,
@@ -63,9 +59,7 @@ public class FidelidadeService {
         return fidelidadeRepository.save(fidelidade);
     }
 
-    // =====================================================
     // ADICIONAR PONTOS
-    // =====================================================
 
     public Fidelidade adicionarPontos(
             Long clienteId,
@@ -99,9 +93,7 @@ public class FidelidadeService {
         return fidelidadeSalva;
     }
 
-    // =====================================================
     // RESGATAR PONTOS
-    // =====================================================
 
     public Fidelidade resgatarPontos(
             Long clienteId,
@@ -150,9 +142,7 @@ public class FidelidadeService {
         return fidelidadeSalva;
     }
 
-    // =====================================================
     // CONSULTAR HISTÓRICO
-    // =====================================================
 
     public List<HistoricoFidelidade> consultarHistorico(
             Long clienteId) {
@@ -161,9 +151,7 @@ public class FidelidadeService {
                 .findByClienteIdOrderByDataHoraDesc(clienteId);
     }
 
-    // =====================================================
     // REGISTRAR HISTÓRICO SEM ALTERAR O SALDO
-    // =====================================================
 
     public HistoricoFidelidade registrarHistorico(
             Long clienteId,
@@ -187,9 +175,7 @@ public class FidelidadeService {
         return historicoFidelidadeRepository.save(historico);
     }
 
-    // =====================================================
     // EXCLUIR REGISTRO DO HISTÓRICO
-    // =====================================================
 
     public void excluirHistorico(Long id) {
 

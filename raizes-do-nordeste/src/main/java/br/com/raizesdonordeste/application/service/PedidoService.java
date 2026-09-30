@@ -289,7 +289,7 @@ public class PedidoService {
 
 
 
-            // importante para o relacionamento
+            // IMPORTANTE PARA RELACIONAMENTO
             item.setPedido(pedido);
 
 

@@ -1,11 +1,11 @@
 {
   "info": {
-    "_postman_id": "d58e2b10-fc0b-44bc-82fd-86035ac85aa2",
+    "_postman_id": "891c8323-8b3b-4d40-aac6-9ae075d3de25",
     "name": "Raízes do Nordeste - Projeto Multidisciplinar",
     "description": "Coleção de testes do backend da Rede Raízes do Nordeste, cobrindo autenticação, autorização, pedidos, estoque, pagamento mock, fidelidade/LGPD, multicanal e auditoria.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "57662475",
-    "_collection_link": "https://go.postman.co/collection/57662475-d58e2b10-fc0b-44bc-82fd-86035ac85aa2?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/57662475-891c8323-8b3b-4d40-aac6-9ae075d3de25?source=collection_link"
   },
   "item": [
     {
@@ -83,7 +83,7 @@
           "response": []
         },
         {
-          "name": "Acesso com papel incorreto - 403",
+          "name": "Acesso com papel incorreto - testar com token do operador - erro 403",
           "request": {
             "method": "GET",
             "header": [
@@ -288,12 +288,27 @@
           "response": []
         },
         {
-          "name": "Quantidade inválida - erro 400",
+          "name": "Canal de pedido inválido    - erro 400",
           "request": {
-            "method": "GET",
+            "method": "POST",
             "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"unidadeId\":1,\"formaPagamento\":\"\",\"itens\":[{\"produtoId\":2,\"quantidade\":1},{\"produtoId\":3,\"quantidade\":1}]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": ""
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
             }
           },
           "response": []
@@ -301,10 +316,24 @@
         {
           "name": "Atualizar status - EM_PREPARACAO",
           "request": {
-            "method": "GET",
+            "method": "PUT",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{baseUrl}}/pedidos/{id}/status?status=EM_PREPARACAO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos",
+                "{id}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "EM_PREPARACAO"
+                }
+              ]
             }
           },
           "response": []
@@ -312,10 +341,24 @@
         {
           "name": "EM_PREPARACAO → PRONTO",
           "request": {
-            "method": "GET",
+            "method": "PUT",
             "header": [],
             "url": {
-              "raw": ""
+              "raw": "{{baseUrl}}/pedidos/{id}/status?status=PRONTO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos",
+                "{id}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PRONTO"
+                }
+              ]
             }
           },
           "response": []
@@ -323,21 +366,42 @@
         {
           "name": "PRONTO → ENTREGUE",
           "request": {
-            "method": "GET",
-            "header": [],
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"clienteId\":123,\"unidadeId\":1,\"formaPagamento\":\"MOCK\",\"itens\":[{\"produtoId\":2,\"quantidade\":1}]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": ""
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "testar transição inválida 409",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": ""
+              "raw": "{{baseUrl}}/pedidos/{id}/status?status=ENTREGUE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos",
+                "{id}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ENTREGUE"
+                }
+              ]
             }
           },
           "response": []
@@ -579,16 +643,6 @@
       ]
     }
   ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJvcGVyYWRvckByYWl6ZXMuY29tIiwicm9sZSI6Ik9QRVJBRE9SIiwiaWF0IjoxNzg5MTM3NzY5LCJleHAiOjE3ODkxNDEzNjl9.boWv_sIgphYy_5h-JlKKDv290DhclKS_lyFDlH7WFO7iwDy430Bo9zc5b8nXApF_",
-        "type": "string"
-      }
-    ]
-  },
   "variable": [
     {
       "key": "baseUrl",
@@ -607,8 +661,7 @@
       "value": "123"
     },
     {
-      "key": "json_web_token_0fcz",
-      "secret": true
+      "key": "json_web_token_0fcz"
     }
   ]
 }

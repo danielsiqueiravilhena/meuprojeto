@@ -36,18 +36,14 @@ public class SecurityConfig {
         this.auditoriaService = auditoriaService;
     }
 
-    // =====================================================
     // SENHAS
-    // =====================================================
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // =====================================================
     // USUÁRIOS DO BANCO
-    // =====================================================
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -70,9 +66,7 @@ public class SecurityConfig {
         };
     }
 
-    // =====================================================
     // FILTRO JWT
-    // =====================================================
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -83,9 +77,7 @@ public class SecurityConfig {
         );
     }
 
-    // =====================================================
     // FILTRO DE AUDITORIA
-    // =====================================================
 
     @Bean
     public AuditoriaFilter auditoriaFilter() {
@@ -95,9 +87,7 @@ public class SecurityConfig {
         );
     }
 
-    // =====================================================
     // CONFIGURAÇÃO DE SEGURANÇA
-    // =====================================================
 
     @Bean
     public SecurityFilterChain securityFilterChain(
@@ -108,9 +98,7 @@ public class SecurityConfig {
 
         http
 
-            // =================================================
             // API REST
-            // =================================================
 
             .csrf(csrf -> csrf.disable())
 
@@ -124,15 +112,11 @@ public class SecurityConfig {
 
             .httpBasic(basic -> basic.disable())
 
-            // =================================================
             // TRATAMENTO DE ERROS
-            // =================================================
 
             .exceptionHandling(exceptions -> exceptions
 
-                    // -----------------------------------------
                     // 401 - NÃO AUTENTICADO
-                    // -----------------------------------------
 
                     .authenticationEntryPoint(
                             (request, response, authException) -> {
@@ -152,9 +136,7 @@ public class SecurityConfig {
                             }
                     )
 
-                    // -----------------------------------------
                     // 403 - SEM PERMISSÃO
-                    // -----------------------------------------
 
                     .accessDeniedHandler(
                             (request, response, accessDeniedException) -> {
@@ -175,15 +157,11 @@ public class SecurityConfig {
                     )
             )
 
-            // =================================================
             // AUTORIZAÇÃO DAS ROTAS
-            // =================================================
 
             .authorizeHttpRequests(auth -> auth
 
-                    // -----------------------------------------
                     // ROTAS PÚBLICAS
-                    // -----------------------------------------
 
                     .requestMatchers("/auth/**")
                     .permitAll()
@@ -191,9 +169,7 @@ public class SecurityConfig {
                     .requestMatchers("/error")
                     .permitAll()
 
-                    // -----------------------------------------
                     // SWAGGER / OPENAPI
-                    // -----------------------------------------
 
                     .requestMatchers(
                             "/swagger-ui/**",
@@ -202,81 +178,61 @@ public class SecurityConfig {
                     )
                     .permitAll()
 
-                    // -----------------------------------------
                     // USUÁRIOS
                     // SOMENTE ADMIN
-                    // -----------------------------------------
 
                     .requestMatchers("/usuarios/**")
                     .hasRole("ADMIN")
 
-                    // -----------------------------------------
                     // PRODUTOS
                     // USUÁRIO AUTENTICADO
-                    // -----------------------------------------
 
                     .requestMatchers("/produtos/**")
                     .authenticated()
 
-                    // -----------------------------------------
                     // ESTOQUE
                     // SOMENTE ADMIN
-                    // -----------------------------------------
 
                     .requestMatchers("/estoque/**")
                     .hasRole("ADMIN")
 
-                    // -----------------------------------------
                     // PEDIDOS
                     // USUÁRIO AUTENTICADO
-                    // -----------------------------------------
 
                     .requestMatchers("/pedidos/**")
                     .authenticated()
 
-                    // -----------------------------------------
                     // PAGAMENTOS
                     // USUÁRIO AUTENTICADO
-                    // -----------------------------------------
 
                     .requestMatchers("/pagamentos/**")
                     .authenticated()
 
-                    // -----------------------------------------
                     // FIDELIDADE
                     // USUÁRIO AUTENTICADO
-                    // -----------------------------------------
 
                     .requestMatchers("/fidelidade/**")
                     .authenticated()
 
-                    // -----------------------------------------
                     // UNIDADES
                     // USUÁRIO AUTENTICADO
-                    // -----------------------------------------
 
                     .requestMatchers("/unidades/**")
                     .authenticated()
 
-                    // -----------------------------------------
                     // AUDITORIA
                     // SOMENTE ADMIN
-                    // -----------------------------------------
 
                     .requestMatchers("/auditoria/**")
                     .hasRole("ADMIN")
 
-                    // -----------------------------------------
                     // QUALQUER OUTRA ROTA
-                    // -----------------------------------------
 
                     .anyRequest()
                     .authenticated()
             )
 
-            // =================================================
             // FILTROS
-            // =================================================
 
             .addFilterBefore(
                     jwtAuthenticationFilter,

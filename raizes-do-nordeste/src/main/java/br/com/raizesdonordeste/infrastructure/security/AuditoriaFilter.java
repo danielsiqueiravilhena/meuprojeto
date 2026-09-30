@@ -30,13 +30,13 @@ public class AuditoriaFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Executa primeiro a requisição normalmente
+        // EXECUTA PRIMEIRO A EXECUÇAO NORMALMENTE
         filterChain.doFilter(request, response);
 
-        // Usuário padrão para requisições sem autenticação
+        // USUÁRIO PADRÃO PARA REQUISIÇÃO SEM AUTENTICAÇÃO
         String usuario = "ANONIMO";
 
-        // Obtém a autenticação diretamente do Spring Security
+        // OBTÉM A AUTENTICAÇÃO DIRETO DO SPRING SECURITY
         Authentication authentication =
                 SecurityContextHolder
                         .getContext()
@@ -50,10 +50,10 @@ public class AuditoriaFilter extends OncePerRequestFilter {
             usuario = authentication.getName();
         }
 
-        // Identifica a rota acessada
+        // IDENTIFICA A ROTA ACESSADA
         String rota = request.getRequestURI();
 
-        // Não registra recursos do Swagger
+        // NÃO REGISTRA RECURSOS NO SWAGGER
         if (!rota.startsWith("/swagger-ui")
                 && !rota.startsWith("/v3/api-docs")
                 && !rota.equals("/favicon.ico")) {

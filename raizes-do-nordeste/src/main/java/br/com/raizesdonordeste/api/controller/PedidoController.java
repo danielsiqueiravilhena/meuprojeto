@@ -204,7 +204,7 @@ public class PedidoController {
 
 
 
-        // devolve estoque quando cancelar pedido
+        // DEVOLVE ESTOQUE QUANDO CANCELAR PEDIDO
 
         if (status == StatusPedido.CANCELADO) {
 

@@ -29,9 +29,7 @@ public class FidelidadeController {
         this.fidelidadeService = fidelidadeService;
     }
 
-    // =====================================================
     // CONSULTAR SALDO DE PONTOS
-    // =====================================================
 
     @Operation(
         summary = "Consultar pontos do cliente",
@@ -60,9 +58,7 @@ public class FidelidadeController {
         );
     }
 
-    // =====================================================
     // REGISTRAR CONSENTIMENTO LGPD
-    // =====================================================
 
     @Operation(
         summary = "Registrar consentimento LGPD",
@@ -107,9 +103,7 @@ public class FidelidadeController {
         );
     }
 
-    // =====================================================
     // ADICIONAR PONTOS
-    // =====================================================
 
     @Operation(
         summary = "Adicionar pontos",
@@ -154,9 +148,7 @@ public class FidelidadeController {
         );
     }
 
-    // =====================================================
     // RESGATAR PONTOS
-    // =====================================================
 
     @Operation(
         summary = "Resgatar pontos",
@@ -206,9 +198,7 @@ public class FidelidadeController {
         );
     }
 
-    // =====================================================
     // CONSULTAR HISTÓRICO
-    // =====================================================
 
     @Operation(
         summary = "Consultar histórico de pontos",
@@ -240,9 +230,7 @@ public class FidelidadeController {
         );
     }
 
-    // =====================================================
     // REGISTRAR HISTÓRICO SEM ALTERAR O SALDO
-    // =====================================================
 
     @Operation(
         summary = "Registrar histórico de pontos",
@@ -294,9 +282,7 @@ public class FidelidadeController {
         );
     }
 
-    // =====================================================
     // EXCLUIR REGISTRO DO HISTÓRICO
-    // =====================================================
 
     @Operation(
         summary = "Excluir registro do histórico",
