@@ -4,6 +4,7 @@ Rede Raízes do Nordeste
 
 
 Configuração do ambiente
+
 Configure o PostgreSQL primeiro para iniciar
 Na máquina onde o PostgreSQL está instalado:
 Pressione Win + R
