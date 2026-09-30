@@ -293,6 +293,7 @@ Quando o pagamento é recusado, o registro da tentativa de pagamento é persisti
 Nenhuma transação financeira real é realizada pela aplicação.
 
 
+
 Fidelidade
 
 GET    /fidelidade/cliente/{clienteId}
@@ -326,6 +327,7 @@ controlar operações relacionadas à fidelidade.
 O resgate de pontos exige consentimento LGPD e saldo suficiente.
 
 
+
 A Auditoria
 
 O acesso à auditoria é restrito ao perfil administrativo.
@@ -346,6 +348,7 @@ O endpoint administrativo é:
 GET /auditoria
 
 Esses registros auxiliam na rastreabilidade das operações realizadas pelo sistema.
+
 
 
 A Estrutura de dados principal
@@ -373,6 +376,7 @@ HistoricoFidelidade
 Auditoria
 
 As entidades representam as principais necessidades do domínio da Rede Raízes do Nordeste.
+
 
 
 O Fluxo crítico
@@ -416,6 +420,7 @@ PRONTO
 ENTREGUE
 
 
+
 O Status de pedido
 
 Os principais status utilizados são:
@@ -440,6 +445,7 @@ Um pedido entregue não pode voltar para estados anteriores.
 Pedidos cancelados não podem voltar para o fluxo normal de preparação.
 
 
+
 As Regras de estoque
 
 O estoque é controlado por combinação de:
@@ -461,6 +467,7 @@ HTTP 409 Conflict
 Essa regra evita a criação de pedidos com quantidade superior ao estoque disponível.
 
 
+
 A Fidelização e LGPD
 
 O programa de fidelidade mantém o saldo de pontos por cliente e registra as movimentações realizadas.
@@ -471,6 +478,7 @@ consentimentoLgpd
 
 O resgate de pontos depende do consentimento LGPD e da existência de saldo suficiente.
 A solução busca aplicar o princípio de minimização de dados e evitar exposição desnecessária de informações pessoais.
+
 
 
 O Pagamento MOCK
@@ -507,6 +515,7 @@ não são gerados pontos de fidelidade.
 O pagamento é somente uma simulação acadêmica e não processa valores financeiros reais.
 
 
+
 A Segurança
 
 Foram implementadas medidas de segurança para proteção da API, incluindo:
@@ -537,6 +546,7 @@ quando o usuário não está autenticado ou apresenta token inválido.
 403 Forbidden
 
 quando o usuário está autenticado, mas não possui permissão para acessar determinado recurso.
+
 
 
 O Tratamento de erros
@@ -583,6 +593,7 @@ Exemplo:
 }
 
 
+
 Os Testes realizados
 
 Foram considerados cenários positivos e negativos para validar os principais requisitos da aplicação.
@@ -622,6 +633,7 @@ Pontos inválidos	                  400
 Filtro por canal	        Pedidos filtrados
 
 Consulta de auditoria	    Registro persistido
+
 
 
 
@@ -666,6 +678,7 @@ Consultar fidelidade
 Consultar histórico
 
 
+
 As Promoções e campanhas
 
 Como evolução do sistema, está prevista a possibilidade de implementação da campanha:
@@ -683,6 +696,7 @@ somente para produtos participantes;
 
 sem cumulatividade com outras promoções.
 Essa regra é uma proposta de evolução e não representa uma funcionalidade automatizada do MVP atual.
+
 
 
 Observação
