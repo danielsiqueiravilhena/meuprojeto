@@ -68,26 +68,26 @@ A aplicação contempla autenticação por JWT, controle de acesso por perfil, v
 
 As Tecnologias
 
-Java 21
-Spring Boot 4.1.1
-Hibernate
-JWT (JSON Web Token)
-BCrypt
-PostgreSQL
-Flyway
-Bean Validation
-Swagger / OpenAPI
-Maven
-Postman para testes da API
+Java 21;
+Spring Boot 4.1.1;
+Hibernate;
+JWT (JSON Web Token);
+BCrypt;
+PostgreSQL;
+Flyway;
+Bean Validation;
+Swagger / OpenAPI;
+Maven;
+Postman para testes da API.
 
 
 Os Pré-requisitos
 
 Antes de executar o projeto, instale:
-JDK 21
-PostgreSQL
-Eclipse IDE ou outra IDE compatível com projetos Maven
-Postman ou Insomnia para execução dos testes manuais da API
+JDK 21;
+PostgreSQL;
+Eclipse IDE ou outra IDE compatível com projetos Maven;
+Postman ou Insomnia para execução dos testes manuais da API.
 
 
 O Banco de dados
