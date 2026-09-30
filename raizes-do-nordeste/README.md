@@ -262,11 +262,17 @@ Nenhuma transação financeira real é realizada pela aplicação.
 Fidelidade
 
 GET    /fidelidade/cliente/{clienteId}
+
 PUT    /fidelidade/cliente/{clienteId}/consentimento
+
 POST   /fidelidade/cliente/{clienteId}/pontos
+
 POST   /fidelidade/cliente/{clienteId}/resgate
+
 GET    /fidelidade/cliente/{clienteId}/historico
+
 POST   /fidelidade/cliente/{clienteId}/historico
+
 DELETE /fidelidade/historico/{id}
 
 O programa de fidelidade permite:
@@ -298,29 +304,48 @@ Esses registros auxiliam na rastreabilidade das operações realizadas pelo sist
 A Estrutura de dados principal
 
 As principais entidades implementadas são:
+
 Usuario
+
 Unidade
+
 Produto
+
 Estoque
+
 Pedido
+
 ItemPedido
+
 Pagamento
+
 Fidelidade
+
 HistoricoFidelidade
+
 Auditoria
+
 As entidades representam as principais necessidades do domínio da Rede Raízes do Nordeste.
 
 
 O Fluxo crítico
 
 O principal fluxo implementado é:
+
 Pedido
+
 Validação dos dados
+
 Validação da unidade
+
 Validação do produto
+
 Verificação do estoque da unidade
+
 Pedido criado
+
 AGUARDANDO\_PAGAMENTO
+
 Pagamento MOCK
 
 Se APROVADO:
