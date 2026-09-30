@@ -6,16 +6,21 @@ Rede Raízes do Nordeste
 Configuração do ambiente
 
 Configure o PostgreSQL primeiro para iniciar
+
 Na máquina onde o PostgreSQL está instalado:
 Pressione Win + R
+
 Digite:
 services.msc
+
 Procure por algo parecido com:
 postgresql-x64-16
+
 ou postgresql-x64-17, dependendo da versão.
 Clique duas vezes nele.
 Em Tipo de inicialização, selecione:
 Automático
+
 Clique em Aplicar.
 Clique em Iniciar se ele estiver parado.
 Clique em OK.
@@ -23,19 +28,24 @@ Clique em OK.
 Antes de executar o projeto, configure as variáveis de ambiente no Eclipse.
 Acesse:
 Run Configurations
+
 \- Environment
+
 \- New
 
 Crie as seguintes variáveis:
 Name:
 JWT\_SECRET
+
 Value:
 raizes-do-nordeste-chave-secreta-2026
 
 Name:
 DB\_PASSWORD
+
 Value:
 SUA\_SENHA\_DO\_POSTGRES
+
 Substitua pelo valor da senha configurada no PostgreSQL/pgAdmin.
 
 
@@ -43,17 +53,23 @@ Usuários para teste
 
 Após iniciar a aplicação, utilize os usuários abaixo para autenticação:
 Administrador
+
 Email:
 admin@raizes.com
+
 Senha:
 123456
+
 Com permissão de admin.
 
 Operador
+
 Email:
 operador@raizes.com
+
 Senha:
 123456
+
 Com permissão de operador.
 
 Esse Projeto foi desenvolvido para o Projeto Multidisciplinar, com foco na digitalização da Rede Raízes do Nordeste.
@@ -94,9 +110,13 @@ Postman para testes da API.
 Os Pré-requisitos
 
 Antes de executar o projeto, instale:
+
 JDK 21;
+
 PostgreSQL;
+
 Eclipse IDE ou outra IDE compatível com projetos Maven;
+
 Postman ou Insomnia para execução dos testes manuais da API.
 
 
@@ -108,9 +128,11 @@ raizes\_nordeste
 A aplicação utiliza PostgreSQL para persistência dos dados.
 O controle e versionamento das alterações do banco de dados são realizados pelo Flyway, por meio dos arquivos de migração localizados em:
 src/main/resources/db/migration
+
 As migrações são executadas automaticamente durante a inicialização da aplicação.
 O projeto utiliza:
 spring.jpa.hibernate.ddl-auto=validate
+
 Dessa forma, o Hibernate apenas valida a estrutura das entidades em relação ao banco, enquanto o Flyway é responsável pelas alterações versionadas do esquema.
 
 
@@ -175,6 +197,7 @@ Configure a variável JWT\_SECRET.
 Execute a classe:
 
 RaizesDoNordesteApplication.java
+
 A aplicação será disponibilizada em:
 http://localhost:8081
 
@@ -224,6 +247,7 @@ POST /auth/login - autenticação.
 GET /produtos - produtos. 
 
 GET /unidades - unidades. 
+
 GET /estoque - estoque. 
 
 POST /pedidos - criação de pedido. 
@@ -286,12 +310,19 @@ POST   /fidelidade/cliente/{clienteId}/historico
 DELETE /fidelidade/historico/{id}
 
 O programa de fidelidade permite:
+
 consultar saldo;
+
 registrar geração de pontos;
+
 consultar histórico;
+
 realizar resgate;
+
 registrar consentimento LGPD;
+
 controlar operações relacionadas à fidelidade.
+
 O resgate de pontos exige consentimento LGPD e saldo suficiente.
 
 
@@ -300,14 +331,20 @@ A Auditoria
 O acesso à auditoria é restrito ao perfil administrativo.
 A aplicação possui mecanismo de auditoria para registrar operações realizadas na API.
 Entre as informações registradas estão:
+
 usuário;
+
 método HTTP;
+
 rota;
+
 status HTTP;
+
 data e hora.
 
 O endpoint administrativo é:
 GET /auditoria
+
 Esses registros auxiliam na rastreabilidade das operações realizadas pelo sistema.
 
 
@@ -359,29 +396,44 @@ AGUARDANDO\_PAGAMENTO
 Pagamento MOCK
 
 Se APROVADO:
+
 PAGAMENTO\_APROVADO
+
 Geração de pontos
 
 Se RECUSADO:
+
 CANCELADO
 
 Após a aprovação do pagamento, o pedido pode avançar pelas etapas operacionais:
+
 PAGAMENTO\_APROVADO
+
 EM\_PREPARACAO
+
 PRONTO
+
 ENTREGUE
 
 
 O Status de pedido
 
 Os principais status utilizados são:
+
 AGUARDANDO\_PAGAMENTO
+
 PAGAMENTO\_APROVADO
+
 EM\_PREPARACAO
+
 PRONTO
+
 ENTREGUE
+
 ou
+
 CANCELADO
+
 
 As transições são controladas pela regra de negócio da aplicação.
 Um pedido entregue não pode voltar para estados anteriores.
@@ -394,12 +446,18 @@ O estoque é controlado por combinação de:
 Unidade + Produto
 
 Antes da criação do pedido, a aplicação verifica:
+
 se a unidade existe e está ativa;
+
 se o produto existe;
+
 se existe estoque cadastrado para aquela unidade e produto;
+
 se a quantidade disponível é suficiente.
 Quando o estoque é insuficiente, a API retorna:
+
 HTTP 409 Conflict
+
 Essa regra evita a criação de pedidos com quantidade superior ao estoque disponível.
 
 
@@ -410,6 +468,7 @@ Os pontos são gerados após um pagamento MOCK aprovado, conforme a regra implem
 O sistema mantém histórico das movimentações de pontos.
 O programa também possui o campo:
 consentimentoLgpd
+
 O resgate de pontos depende do consentimento LGPD e da existência de saldo suficiente.
 A solução busca aplicar o princípio de minimização de dados e evitar exposição desnecessária de informações pessoais.
 
@@ -418,21 +477,32 @@ O Pagamento MOCK
 
 O pagamento simulado representa uma integração com um serviço externo de pagamentos.
 O endpoint permite informar dois resultados:
+
 APROVADO
+
 RECUSADO
 
 
 Pagamento aprovado
+
 Quando o resultado é APROVADO:
+
 o pagamento é persistido;
+
 o pedido recebe o status PAGAMENTO\_APROVADO;
+
 são gerados pontos de fidelidade;
+
 a movimentação de pontos é registrada no histórico.
 
 Pagamento recusado
+
 Quando o resultado é RECUSADO:
+
 a tentativa de pagamento é registrada;
+
 o pedido recebe o status CANCELADO;
+
 não são gerados pontos de fidelidade.
 O pagamento é somente uma simulação acadêmica e não processa valores financeiros reais.
 
@@ -440,20 +510,32 @@ O pagamento é somente uma simulação acadêmica e não processa valores financ
 A Segurança
 
 Foram implementadas medidas de segurança para proteção da API, incluindo:
+
 autenticação com JWT;
+
 autorização por perfil;
+
 senhas protegidas com BCrypt;
+
 autenticação stateless;
+
 proteção dos endpoints conforme as permissões configuradas;
+
 respostas HTTP específicas para falhas de autenticação e autorização;
+
 senha de usuário não exposta nas respostas;
+
 registro de auditoria;
+
 utilização de variável de ambiente para a senha do banco.
 
 Os principais códigos de segurança utilizados são:
 401 Unauthorized
+
 quando o usuário não está autenticado ou apresenta token inválido.
+
 403 Forbidden
+
 quando o usuário está autenticado, mas não possui permissão para acessar determinado recurso.
 
 
@@ -461,22 +543,39 @@ O Tratamento de erros
 
 A API utiliza códigos HTTP coerentes com os problemas encontrados.
 Principais exemplos:
+
 200 OK
+
 Operação realizada com sucesso.
+
 201 Created
+
 Recurso criado com sucesso.
+
 204 No Content
+
 Exclusão realizada com sucesso quando aplicável.
+
 400 Bad Request
+
 Dados inválidos, campos obrigatórios ausentes ou parâmetros incorretos.
+
 401 Unauthorized
+
 Token ausente ou inválido.
+
 403 Forbidden
+
 Usuário autenticado sem permissão.
+
 404 Not Found
+
 Recurso inexistente.
+
 409 Conflict
+
 Conflito de regra de negócio, como estoque insuficiente.
+
 Exemplo:
 {
 "error": "BAD\_REQUEST",
@@ -489,23 +588,41 @@ Os Testes realizados
 Foram considerados cenários positivos e negativos para validar os principais requisitos da aplicação.
 
 Cenário	                  Resultado esperado
+
 Login válido                       	200
+
 Requisição sem token	              401
+
 Usuário sem permissão	              403
+
 Campo obrigatório ausente  	        400
+
 canalPedido inválido	              400
+
 Produto inexistente	                404
+
 Unidade inexistente	                404
+
 Estoque insuficiente	              409
+
 Pedido válido	                      201
+
 Pagamento MOCK aprovado	  Pedido PAGAMENTO\_APROVADO
+
 Pagamento MOCK recusado	  Pedido CANCELADO
+
 Consulta de fidelidade  	Saldo persistido
+
 Consentimento LGPD	      Consentimento persistido
+
 Resgate de pontos	        Saldo atualizado
+
 Pontos inválidos	                  400
+
 Filtro por canal	        Pedidos filtrados
+
 Consulta de auditoria	    Registro persistido
+
 
 
 O Postman
@@ -514,23 +631,38 @@ A coleção de testes da API está disponibilizada no projeto em formato JSON, n
 postman/Raízes do Nordeste - Projeto Multidisciplinar.postman\_collection.json
 
 A coleção disponibilizada no projeto contempla:
+
 autenticação;
+
 utilização do token JWT;
+
 operações de pedidos;
+
 estoque;
+
 pagamentos MOCK;
+
 fidelidade;
+
 cenários positivos;
+
 cenários negativos;
+
 respostas de erro.
 
 Um fluxo recomendado para demonstração é:
 Login
+
 Obter JWT
+
 Criar pedido
+
 Executar pagamento MOCK
+
 Verificar status do pedido
+
 Consultar fidelidade
+
 Consultar histórico
 
 
@@ -538,11 +670,17 @@ As Promoções e campanhas
 
 Como evolução do sistema, está prevista a possibilidade de implementação da campanha:
 Raízes da Semana
+
 Regra proposta:
+
 desconto de 10%;
+
 segunda a sexta-feira;
+
 das 11h às 14h;
+
 somente para produtos participantes;
+
 sem cumulatividade com outras promoções.
 Essa regra é uma proposta de evolução e não representa uma funcionalidade automatizada do MVP atual.
 
